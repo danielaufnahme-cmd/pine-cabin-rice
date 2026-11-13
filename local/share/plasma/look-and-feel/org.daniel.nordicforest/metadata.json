@@ -1,0 +1,13 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [ { "Name": "daniel" } ],
+        "Category": "",
+        "Description": "NordicForest rice: navy NordicForest colours, Kvantum NordicForest, nordicforest-glass Plasma style, Papirus-Dark, Bibata-Modern-Ice cursor, NordicForest splash",
+        "Id": "org.daniel.nordicforest",
+        "License": "GPL-2.0-or-later",
+        "Name": "NordicForest",
+        "Version": "1.0"
+    },
+    "X-Plasma-APIVersion": "2"
+}

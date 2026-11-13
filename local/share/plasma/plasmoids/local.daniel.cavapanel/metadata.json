@@ -1,0 +1,14 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{ "Name": "Daniel" }],
+        "Category": "Multimedia",
+        "Description": "Small cava bars for the dock; collapses when nothing is playing (fed by kde-cava)",
+        "Icon": "audio-volume-high",
+        "Id": "local.daniel.cavapanel",
+        "License": "GPL-2.0+",
+        "Name": "Cava Bars",
+        "Version": "1.0"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

@@ -1,0 +1,8 @@
+/* Written by corners-toggle (round). */
+* {
+    corner-window: 0px;
+    corner-launcher: 18px;
+    corner-inputbar: 12px;
+    corner-element: 11px;
+    corner-message: 12px;
+}

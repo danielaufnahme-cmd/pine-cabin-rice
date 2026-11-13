@@ -1,0 +1,8 @@
+# PineCabin (KDE rice) - dark pine at the base, cedar at the peaks. No purple.
+[color]
+gradient = 1
+gradient_count = 4
+gradient_color_1 = '#3d4a3c'
+gradient_color_2 = '#7f9a6e'
+gradient_color_3 = '#c88a52'
+gradient_color_4 = '#d9a26e'

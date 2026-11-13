@@ -1,0 +1,14 @@
+#!/bin/sh
+# SUPER+W (Mango): toggle floating like Hyprland. A window that becomes
+# floating is sized to 60% of its monitor and centred; pressing again tiles it.
+c=$(mmsg get focusing-client) || exit 0
+[ -n "$c" ] || exit 0
+was_floating=$(printf '%s' "$c" | jq -r '.is_floating')
+mmsg dispatch togglefloating
+if [ "$was_floating" = false ]; then
+	mon=$(printf '%s' "$c" | jq -r '.monitor')
+	set -- $(mmsg get monitor "$mon" | jq '.width * 0.6, .height * 0.6 | floor')
+	[ $# -eq 2 ] || exit 0
+	mmsg dispatch "resizewin,$1,$2"
+	mmsg dispatch centerwin
+fi

@@ -1,0 +1,48 @@
+#!/bin/sh
+# Start MangoWM nested in a window inside KDE without touching KDE's session.
+# mango itself runs `systemctl --user import-environment ...`,
+# `systemctl --user --no-block start mango-session.target`,
+# `dbus-update-activation-environment ...` on start and
+# `systemctl --user stop graphical-session.target` on exit, via /bin/sh -c
+# (PATH lookup). A private shim dir earlier in PATH turns those into logged
+# no-ops, and dbus-run-session gives the nested Mango its own D-Bus bus.
+# That bus has no activatable services, so nothing inside the nested Mango can
+# auto-start a second document portal / kded / kio-fuse / gvfs that would
+# share KDE's runtime dir and fight KDE's own instances.
+set -eu
+: "${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR must be set}"
+shim="$XDG_RUNTIME_DIR/mango-nested-shim"
+log="$XDG_RUNTIME_DIR/mango-nested.log"
+mkdir -p "$shim"
+for cmd in systemctl dbus-update-activation-environment; do
+    cat > "$shim/$cmd" <<SHIM
+#!/bin/sh
+# no-op shim from mango-nested: keeps nested Mango out of KDE's session env
+printf '%s [%s] blocked: $cmd %s\n' "\$(date '+%F %T')" "\$\$" "\$*" >> "$log"
+exit 0
+SHIM
+    chmod 755 "$shim/$cmd"
+done
+mkdir -p "$shim/dbus-services"
+cat > "$shim/bus.conf" <<CONF
+<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+  <type>session</type>
+  <keep_umask/>
+  <listen>unix:tmpdir=/tmp</listen>
+  <auth>EXTERNAL</auth>
+  <servicedir>$shim/dbus-services</servicedir>
+  <policy context="default">
+    <allow send_destination="*" eavesdrop="true"/>
+    <allow eavesdrop="true"/>
+    <allow own="*"/>
+  </policy>
+</busconfig>
+CONF
+printf '%s [%s] starting nested mango (parent WAYLAND_DISPLAY=%s)\n' \
+    "$(date '+%F %T')" "$$" "${WAYLAND_DISPLAY:-}" >> "$log"
+PATH="$shim:$PATH"
+MANGO_NESTED=1
+export PATH MANGO_NESTED
+exec dbus-run-session --config-file="$shim/bus.conf" -- mango "$@"

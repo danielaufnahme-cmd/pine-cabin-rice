@@ -1,0 +1,14 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{ "Name": "Daniel" }],
+        "Category": "Windows and Tasks",
+        "Description": "Compact workspace indicator showing only occupied virtual desktops",
+        "Icon": "user-desktop",
+        "Id": "local.daniel.workspaces",
+        "License": "GPL-2.0+",
+        "Name": "Workspaces",
+        "Version": "1.0"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

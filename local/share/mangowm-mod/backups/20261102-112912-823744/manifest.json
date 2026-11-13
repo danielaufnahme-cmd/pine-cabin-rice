@@ -1,0 +1,15 @@
+{
+  "id": "20261102-112912-823744",
+  "created": "2026-11-02T11:29:12.823744402+01:00",
+  "label": "Apply changes",
+  "files": [
+    {
+      "path": "/home/daniel/.config/mango/mango-mod.conf",
+      "copy": "000-mango-mod.conf"
+    },
+    {
+      "path": "/home/daniel/.config/mango/config.conf",
+      "copy": "001-config.conf"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "backend": "mangobar",
+  "height": 28,
+  "auto_height": true,
+  "modules": {
+    "left": [
+      "workspaces",
+      "layout",
+      "window"
+    ],
+    "center": [
+      "clock"
+    ],
+    "right": [
+      "cpu",
+      "memory",
+      "pulseaudio",
+      "network",
+      "battery",
+      "tray"
+    ]
+  },
+  "bg_color": "#00000000",
+  "fg_color": "#c8d0c2ff",
+  "accent_color": "#c88a52ff",
+  "radius": 14,
+  "font": "JetBrainsMono Nerd Font",
+  "font_size": 13,
+  "font_weight": "medium",
+  "layer": "top",
+  "position": "top",
+  "margin_top": 6,
+  "margin_bottom": 0,
+  "margin_left": 8,
+  "margin_right": 8,
+  "spacing": 0,
+  "module_bg_color": "#1c221de6",
+  "hover_color": "#2b352cff",
+  "urgent_color": "#b5574aff",
+  "inactive_color": "#869180ff",
+  "module_padding": 12,
+  "module_margin": 0,
+  "module_gap": 3,
+  "module_radius": 10,
+  "border_width": 0,
+  "border_color": "#3d4a3c66",
+  "title_length": 48,
+  "tag_fill": true,
+  "start_at_login": true,
+  "waybar_mango_modules": true,
+  "memory_display": "percent",
+  "preset": "islands"
+}

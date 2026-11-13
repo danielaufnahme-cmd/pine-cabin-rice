@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Screenshot for the Mango session: saves a PNG to ~/Pictures/Screenshots and
+# copies it to the clipboard.   usage: mango-screenshot region|full
+set -euo pipefail
+
+mode="${1:-}"
+dir="$HOME/Pictures/Screenshots"
+file="$dir/Screenshot_$(date +%Y%m%d_%H%M%S).png"
+mkdir -p "$dir"
+
+case "$mode" in
+    region)
+        # Esc in slurp = cancelled: exit quietly, no file, no notification.
+        geom="$(slurp)" || exit 0
+        grim -g "$geom" "$file"
+        ;;
+    full)
+        grim "$file"
+        ;;
+    *)
+        echo "usage: ${0##*/} region|full" >&2
+        exit 2
+        ;;
+esac
+
+wl-copy --type image/png < "$file"
+notify-send -a Screenshot -i "$file" "Screenshot saved" "${file/#$HOME/\~} (copied to clipboard)" || true

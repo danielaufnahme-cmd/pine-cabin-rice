@@ -1,0 +1,11 @@
+{
+  "id": "20261102-130016-418781",
+  "created": "2026-11-02T13:00:16.418781507+01:00",
+  "label": "Before turning off the old bar autostart",
+  "files": [
+    {
+      "path": "/home/daniel/.config/mango/config.conf",
+      "copy": "000-config.conf"
+    }
+  ]
+}

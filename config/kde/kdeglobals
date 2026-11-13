@@ -1,0 +1,175 @@
+[ColorEffects:Disabled]
+ChangeSelectionColor=
+Color=28,34,29
+ColorAmount=0
+ColorEffect=0
+ContrastAmount=0.65
+ContrastEffect=1
+Enable=
+IntensityAmount=0.1
+IntensityEffect=2
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color=20,24,21
+ColorAmount=0.025
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=2
+Enable=false
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate=61,74,60
+BackgroundNormal=43,53,44
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:Complementary]
+BackgroundAlternate=28,34,29
+BackgroundNormal=20,24,21
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:Header]
+BackgroundAlternate=28,34,29
+BackgroundNormal=35,43,36
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:Header][Inactive]
+BackgroundAlternate=20,24,21
+BackgroundNormal=28,34,29
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=134,145,128
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:Selection]
+BackgroundAlternate=156,108,64
+BackgroundNormal=200,138,82
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=20,24,21
+ForegroundInactive=35,43,36
+ForegroundLink=28,34,29
+ForegroundNegative=110,40,32
+ForegroundNeutral=70,45,20
+ForegroundNormal=20,24,21
+ForegroundPositive=40,62,32
+ForegroundVisited=35,43,36
+
+[Colors:Tooltip]
+BackgroundAlternate=28,34,29
+BackgroundNormal=35,43,36
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:View]
+BackgroundAlternate=28,34,29
+BackgroundNormal=20,24,21
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[Colors:Window]
+BackgroundAlternate=43,53,44
+BackgroundNormal=28,34,29
+DecorationFocus=127,154,110
+DecorationHover=149,176,130
+ForegroundActive=217,162,110
+ForegroundInactive=134,145,128
+ForegroundLink=217,162,110
+ForegroundNegative=181,87,74
+ForegroundNeutral=200,138,82
+ForegroundNormal=200,208,194
+ForegroundPositive=127,154,110
+ForegroundVisited=127,154,110
+
+[General]
+ColorSchemeHash=6e61c3d0ca1bda9e9a9a55f7b4570d8b7e5e736c
+fixed=MonaspiceNe Nerd Font Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+font=MonaspiceNe Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+menuFont=MonaspiceNe Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+smallestReadableFont=MonaspiceNe Nerd Font,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+toolBarFont=MonaspiceNe Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+ColorScheme=PineCabin
+
+[KDE]
+AnimationDurationFactor=0.5
+DefaultDarkLookAndFeel=Catppuccin.Mocha
+LookAndFeelPackage=org.daniel.pinecabin
+contrast=4
+frameContrast=0.2
+
+[KFileDialog Settings]
+Allow Expansion=false
+Automatically select filename extension=true
+Breadcrumb Navigation=true
+Decoration position=2
+Show Full Path=false
+Show Inline Previews=true
+Show Preview=false
+Show Speedbar=true
+Show hidden files=false
+Sort by=Name
+Sort directories first=true
+Sort hidden files last=false
+Sort reversed=false
+Speedbar Width=140
+View Style=DetailTree
+
+[WM]
+activeBackground=35,43,36
+activeBlend=35,43,36
+activeFont=MonaspiceNe Nerd Font,10,-1,5,500,0,0,0,0,0,0,0,0,0,0,1
+activeForeground=200,208,194
+inactiveBackground=28,34,29
+inactiveBlend=28,34,29
+inactiveForeground=134,145,128

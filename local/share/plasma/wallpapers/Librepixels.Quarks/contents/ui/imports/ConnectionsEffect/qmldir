@@ -1,0 +1,3 @@
+module ConnectionsEffect
+plugin connectionseffectplugin
+ConnectionsEffectView 1.0 ConnectionsEffectView.qml

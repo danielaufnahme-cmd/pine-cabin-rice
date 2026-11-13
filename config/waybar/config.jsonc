@@ -1,0 +1,82 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
+  "spacing": 6,
+  "reload_style_on_change": true,
+
+  "modules-left": ["ext/workspaces", "custom/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["tray", "cpu", "memory", "network", "pulseaudio"],
+
+  "ext/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "sort-by-id": true,
+    "ignore-hidden": true
+  },
+
+  "custom/window": {
+    "exec": "mmsg watch focusing-client | jq --unbuffered -r '.title // \"\"'",
+    "restart-interval": 3,
+    "escape": true,
+    "max-length": 60,
+    "hide-empty-text": true,
+    "tooltip": false
+  },
+
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "",
+      "format": {
+        "today": "<span color='#76ccb1'><b>{}</b></span>"
+      }
+    }
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  },
+
+  "cpu": {
+    "format": "󰍛 {usage}%",
+    "interval": 3,
+    "tooltip": false
+  },
+
+  "memory": {
+    "format": "󰘚 {percentage}%",
+    "interval": 5,
+    "tooltip-format": "{used:0.1f} / {total:0.1f} GiB"
+  },
+
+  "network": {
+    "format-wifi": "󰤨 {essid}",
+    "format-ethernet": "󰈀",
+    "format-linked": "󰈀 no IP",
+    "format-disconnected": "󰤭",
+    "tooltip-format": "{ifname}  {ipaddr}/{cidr}",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)  {ipaddr}",
+    "on-click": "nm-connection-editor"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟 muted",
+    "format-icons": {
+      "headphone": "󰋋",
+      "default": ["󰕿", "󰖀", "󰕾"]
+    },
+    "scroll-step": 5,
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "tooltip-format": "{desc}"
+  }
+}

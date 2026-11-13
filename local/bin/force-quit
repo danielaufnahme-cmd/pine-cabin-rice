@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+"""Force quit (SIGKILL) the active window's process. KWin one-shot script reports the pid over D-Bus. --dry only prints."""
+import os, sys, tempfile
+from gi.repository import Gio, GLib
+
+DRY = "--dry" in sys.argv
+NAME = f"org.local.ForceQuit.p{os.getpid()}"
+XML = '<node><interface name="org.local.ForceQuit"><method name="Report"><arg type="i" direction="in"/><arg type="s" direction="in"/></method></interface></node>'
+loop = GLib.MainLoop()
+result = {}
+
+def on_call(conn, sender, path, iface, method, params, inv):
+    result["pid"], result["cls"] = params.unpack()
+    inv.return_value(None)
+    loop.quit()
+
+bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+node = Gio.DBusNodeInfo.new_for_xml(XML)
+bus.register_object("/", node.interfaces[0], on_call, None, None)
+Gio.bus_own_name_on_connection(bus, NAME, Gio.BusNameOwnerFlags.NONE, None, None)
+
+js = tempfile.NamedTemporaryFile("w", suffix=".js", delete=False)
+js.write(f'var w=workspace.activeWindow; callDBus("{NAME}","/","org.local.ForceQuit","Report",w?w.pid:0,w?String(w.resourceClass):"");')
+js.close()
+sname = f"fq{os.getpid()}"
+kw = lambda path, iface, m, sig, *a: bus.call_sync("org.kde.KWin", path, iface, m, GLib.Variant(sig, a) if sig else None, None, Gio.DBusCallFlags.NONE, 3000, None)
+try:
+    sid = kw("/Scripting", "org.kde.kwin.Scripting", "loadScript", "(ss)", js.name, sname).unpack()[0]
+    GLib.timeout_add(2500, loop.quit)
+    kw(f"/Scripting/Script{sid}", "org.kde.kwin.Script", "run", None)
+    loop.run()
+finally:
+    try: kw("/Scripting", "org.kde.kwin.Scripting", "unloadScript", "(s)", sname)
+    except Exception: pass
+    os.unlink(js.name)
+
+pid = result.get("pid", 0)
+if pid <= 1:
+    sys.exit("no active window pid")
+try:
+    comm = open(f"/proc/{pid}/comm").read().strip()
+except OSError:
+    sys.exit("process gone")
+if comm in ("plasmashell", "kwin_wayland", "kwin_x11", "systemd", "Xwayland", "ksmserver", "dbus-daemon", "dbus-broker") or comm.startswith(("sddm", "startplasma")):
+    sys.exit(f"refusing to kill {comm}")
+try:  # test hook: if this file holds a window class, only kill that class
+    only = open(os.path.expanduser("~/.cache/force-quit-only-class")).read().strip()
+except OSError:
+    only = ""
+if only and result["cls"] != only:
+    sys.exit(f"test guard: active class {result['cls']} != {only}, not killing")
+print(pid, comm, result["cls"])
+if not DRY:
+    os.kill(pid, 9)

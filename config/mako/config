@@ -1,0 +1,15 @@
+# Notifications vanish after 3 s, even if the app asks to keep them.
+default-timeout=3000
+ignore-timeout=1
+# Show at most 3 at once; extras wait in the queue.
+max-visible=3
+
+# Pine Cabin colours (match the Mango rice: dark-pine-forest-cabin-photo.png)
+background-color=#1c221d
+text-color=#c8d0c2
+border-color=#3d4a3c
+progress-color=over #c88a52
+border-radius=12
+
+[urgency=high]
+border-color=#b5574a

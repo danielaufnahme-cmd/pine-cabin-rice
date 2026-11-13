@@ -1,0 +1,91 @@
+# Pine Cabin prompt — minimal, two-tone (cedar accent + pine green).
+# Palette matches the Mango/KDE Pine Cabin rice. No purple.
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+palette = "pinecabin"
+command_timeout = 400
+
+format = """$directory$git_branch$git_status$python$nodejs$rust$golang$c$java$cmd_duration$line_break$character"""
+
+[palettes.pinecabin]
+bg         = "#141815"
+bg_alt     = "#1c221d"
+surface    = "#2b352c"
+surface_hi = "#3d4a3c"
+pine       = "#7f9a6e"
+cedar      = "#c88a52"
+cedar_hi   = "#d9a26e"
+sage       = "#c8d0c2"
+dim        = "#869180"
+amber      = "#d9a26e"
+brick      = "#b5574a"
+
+[directory]
+format = "[󰉋 $path]($style)[$read_only]($read_only_style) "
+style = "bold cedar"
+read_only = " 󰌾"
+read_only_style = "dim"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = "~"
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = " "
+style = "pine"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+style = "dim"
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+untracked = "?"
+stashed = "≡"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[cmd_duration]
+min_time = 2000
+format = "[󱦟 $duration]($style) "
+style = "dim"
+
+[character]
+success_symbol = "[❯](bold cedar)"
+error_symbol = "[❯](bold brick)"
+vimcmd_symbol = "[❮](bold pine)"
+
+# Languages: only shown inside matching projects (starship default detection).
+[python]
+format = "[$symbol$version( \\($virtualenv\\))]($style) "
+symbol = " "
+style = "dim"
+
+[nodejs]
+format = "[$symbol$version]($style) "
+symbol = " "
+style = "dim"
+
+[rust]
+format = "[$symbol$version]($style) "
+symbol = " "
+style = "dim"
+
+[golang]
+format = "[$symbol$version]($style) "
+symbol = " "
+style = "dim"
+
+[c]
+format = "[$symbol$version]($style) "
+symbol = " "
+style = "dim"
+
+[java]
+format = "[$symbol$version]($style) "
+symbol = " "
+style = "dim"

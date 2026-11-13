@@ -1,0 +1,8 @@
+# NordicForest (KDE rice) - slate at the base, icy at the peaks. No purple.
+[color]
+gradient = 1
+gradient_count = 4
+gradient_color_1 = '#425668'
+gradient_color_2 = '#6d97ae'
+gradient_color_3 = '#aecfde'
+gradient_color_4 = '#bbdfed'

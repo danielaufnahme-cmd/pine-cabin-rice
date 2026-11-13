@@ -1,0 +1,12 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [ { "Name": "daniel" } ],
+        "Description": "PineCabin minimal splash: dark pine, cedar emblem, thin progress line",
+        "Id": "PineCabin.Splash",
+        "License": "GPL-2.0-or-later",
+        "Name": "PineCabin Splash",
+        "Version": "1.0"
+    },
+    "X-Plasma-APIVersion": "2"
+}

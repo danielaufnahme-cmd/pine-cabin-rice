@@ -1,0 +1,100 @@
+#!/usr/bin/python3 -I
+"""kwin-focus-follow left|right|up|down
+
+Moves keyboard focus to the window in that direction (KWin's own
+"Switch to Window to the Left/Right/Above/Below" logic) and then puts the
+mouse pointer at the centre of the newly focused window.
+
+How: a tiny one-shot KWin script does the switch and reports the new
+window's geometry back over DBus; `cursor-warp` (org_kde_kwin_fake_input)
+then moves the pointer. Bound to Meta+arrows via kwin-focus-<dir>.desktop.
+"""
+import os
+import subprocess
+import sys
+import tempfile
+
+from gi.repository import Gio, GLib
+
+SLOTS = {
+    "left": "slotSwitchWindowLeft",
+    "right": "slotSwitchWindowRight",
+    "up": "slotSwitchWindowUp",
+    "down": "slotSwitchWindowDown",
+}
+CURSOR_WARP = os.path.expanduser("~/.local/bin/cursor-warp")
+REPLY_IFACE = "org.kde.KwinFocusFollow"
+TIMEOUT_MS = 1000
+
+SCRIPT = """
+const before = workspace.activeWindow;
+workspace.%(slot)s();
+const w = workspace.activeWindow;
+if (w && w !== before) {
+    const g = w.frameGeometry;
+    callDBus("%(bus)s", "/", "%(iface)s", "result",
+             String(g.x + g.width / 2), String(g.y + g.height / 2));
+} else {
+    callDBus("%(bus)s", "/", "%(iface)s", "result", "", "");
+}
+"""
+
+INTROSPECTION = """
+<node><interface name="%s">
+  <method name="result"><arg type="s" direction="in"/><arg type="s" direction="in"/></method>
+</interface></node>
+""" % REPLY_IFACE
+
+
+def kwin_call(bus, path, iface, method, args, reply_type):
+    return bus.call_sync("org.kde.KWin", path, iface, method, args,
+                         GLib.VariantType(reply_type) if reply_type else None,
+                         Gio.DBusCallFlags.NONE, TIMEOUT_MS, None)
+
+
+def switch_and_get_centre(bus, slot):
+    """Run the one-shot KWin script; return (x, y) of the new window or None."""
+    loop = GLib.MainLoop()
+    result = {}
+
+    def on_call(_conn, _sender, _path, _iface, _method, params, invocation):
+        result["xy"] = params.unpack()
+        invocation.return_value(None)
+        loop.quit()
+
+    node = Gio.DBusNodeInfo.new_for_xml(INTROSPECTION)
+    reg_id = bus.register_object_with_closures2("/", node.interfaces[0], on_call, None, None)
+    plugin = "kwin-focus-follow-%d" % os.getpid()
+    with tempfile.NamedTemporaryFile("w", suffix=".js", prefix="kwin-focus-follow-",
+                                     dir=os.environ.get("XDG_RUNTIME_DIR")) as js:
+        js.write(SCRIPT % {"slot": slot, "bus": bus.get_unique_name(), "iface": REPLY_IFACE})
+        js.flush()
+        try:
+            (script_id,) = kwin_call(bus, "/Scripting", "org.kde.kwin.Scripting", "loadScript",
+                                     GLib.Variant("(ss)", (js.name, plugin)), "(i)").unpack()
+            if script_id < 0:
+                sys.exit("kwin-focus-follow: KWin refused to load the script")
+            GLib.timeout_add(TIMEOUT_MS, loop.quit)
+            kwin_call(bus, "/Scripting/Script%d" % script_id, "org.kde.kwin.Script", "run",
+                      None, None)
+            loop.run()
+        finally:
+            kwin_call(bus, "/Scripting", "org.kde.kwin.Scripting", "unloadScript",
+                      GLib.Variant("(s)", (plugin,)), "(b)")
+            bus.unregister_object(reg_id)
+
+    x, y = result.get("xy", ("", ""))
+    return (x, y) if x else None
+
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in SLOTS:
+        sys.exit("usage: kwin-focus-follow left|right|up|down")
+    bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+    centre = switch_and_get_centre(bus, SLOTS[sys.argv[1]])
+    if centre:
+        subprocess.run([CURSOR_WARP, centre[0], centre[1]], check=False)
+
+
+if __name__ == "__main__":
+    main()

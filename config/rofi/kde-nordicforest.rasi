@@ -1,0 +1,105 @@
+/* ~/.config/rofi/kde-nordicforest.rasi -- Super+Space launcher on KDE Plasma.
+ *
+ * Loaded ONLY by ~/.local/bin/kde-launcher (rofi -config <this file>), so the
+ * Hyprland/mango config.rasi next to it is never read here.
+ * PineCabin palette (same as the Mango pine-cabin.rasi): bg #141815,
+ * text #c8d0c2, cedar accent #c88a52. (File name kept: kde-launcher loads it.)
+ * Blur behind the box comes from KWin's Better Blur DX (window class "rofi").
+ * The list keeps a fixed number of rows, so the centred box never jumps
+ * while typing.
+ */
+
+configuration {
+    combi-display-format: "{text}";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    matching: "normal";
+    sort: true;
+    sorting-method: "fzf";
+    drun-match-fields: "name,generic,exec,keywords";
+    drun-display-format: "{name}[<span alpha='55%'>  {generic}</span>]";
+    click-to-exit: true;
+}
+
+* {
+    bg:        #141815b3;
+    bg-solid:  #141815;
+    bg-alt:    #1c221d99;
+    fg:        #c8d0c2;
+    fg-dim:    #c8d0c280;
+    accent:    #c88a52;
+    border-c:  #c88a5240;
+
+    font: "MonaspiceNe Nerd Font 12";
+    background-color: transparent;
+    text-color: @fg;
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 640px;
+    background-color: @bg;
+    border: 1px;
+    border-color: @border-c;
+    border-radius: 14px;
+    padding: 12px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing: 10px;
+}
+
+inputbar {
+    children: [ entry ];
+    background-color: @bg-alt;
+    border-radius: 10px;
+    padding: 10px 12px;
+    spacing: 10px;
+}
+
+entry {
+    text-color: @fg;
+    placeholder: "Search apps and files";
+    placeholder-color: @fg-dim;
+    cursor-color: @accent;
+}
+
+listview {
+    border: 0px;
+    lines: 9;
+    fixed-height: true;
+    scrollbar: false;
+    spacing: 2px;
+}
+
+element {
+    padding: 7px 10px;
+    spacing: 12px;
+    border-radius: 9px;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element selected.normal {
+    background-color: @accent;
+    text-color: @bg-solid;
+}
+
+element-icon {
+    size: 22px;
+    background-color: inherit;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}

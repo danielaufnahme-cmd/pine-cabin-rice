@@ -1,0 +1,69 @@
+[Plymouth Theme]
+Name=NordicForest
+Description=Navy background, icy triangle emblem, small icy spinner
+ModuleName=two-step
+
+[two-step]
+Font=Cantarell 12
+TitleFont=Cantarell Light 24
+ImageDir=/usr/share/plymouth/themes/nordicforest
+WatermarkHorizontalAlignment=.5
+WatermarkVerticalAlignment=.42
+HorizontalAlignment=.5
+VerticalAlignment=.68
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.72
+TitleHorizontalAlignment=.5
+TitleVerticalAlignment=.2
+MessageBelowAnimation=true
+Transition=none
+TransitionDuration=0.0
+BackgroundStartColor=0x1b2436
+BackgroundEndColor=0x1b2436
+ProgressBarBackgroundColor=0x425668
+ProgressBarForegroundColor=0xaecfde
+ProgressBarWidth=240
+ProgressBarHeight=3
+ProgressBarHorizontalAlignment=.5
+ProgressBarVerticalAlignment=.68
+DialogClearsFirmwareBackground=true
+
+[boot-up]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[shutdown]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[reboot]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[updates]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Installing Updates...
+SubTitle=Do not turn off your computer
+
+[system-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Upgrading System...
+SubTitle=Do not turn off your computer
+
+[firmware-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Upgrading Firmware...
+SubTitle=Do not turn off your computer
+
+[system-reset]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Resetting System...
+SubTitle=Do not turn off your computer

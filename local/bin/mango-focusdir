@@ -1,0 +1,17 @@
+#!/bin/sh
+# Super+arrow: focus the window in that direction (across monitors).
+# If nothing changed (e.g. the other monitor is empty), switch to the
+# monitor in that direction instead. Cursor follows via warp_cursor=1.
+# When focus lands on the other monitor, a ripple plays there.
+dir="$1"
+id() { mmsg get focusing-client 2>/dev/null | grep -o '"id":[^,]*' | head -n1; }
+mon() { mmsg get all-monitors 2>/dev/null | grep -o '"name":"[^"]*","active":true' | cut -d'"' -f4; }
+before="$(id)"
+mon_before="$(mon)"
+mmsg dispatch "focusdir,$dir" >/dev/null 2>&1
+[ "$(id)" = "$before" ] && mmsg dispatch "focusmon,$dir" >/dev/null 2>&1
+mon_after="$(mon)"
+# detached, so the key binding never waits on it
+[ -n "$mon_before" ] && [ -n "$mon_after" ] && [ "$mon_after" != "$mon_before" ] &&
+	setsid -f "$HOME/.local/bin/mango-monitor-ripple" "$mon_after" >/dev/null 2>&1 </dev/null
+exit 0

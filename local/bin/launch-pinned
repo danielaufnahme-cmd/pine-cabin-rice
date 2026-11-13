@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+"""launch-pinned N: start a NEW window of the Nth app pinned in the Plasma task manager."""
+import configparser, os, re, shlex, subprocess, sys
+
+RC = os.path.expanduser("~/.config/plasma-org.kde.plasma.desktop-appletsrc")
+DRY = os.environ.get("LAUNCH_PINNED_DRY_RUN") == "1"
+NEWWIN = ("firefox", "chromium", "chromium-browser", "google-chrome", "google-chrome-stable",
+          "brave", "brave-browser", "microsoft-edge", "vivaldi", "dolphin", "nautilus")
+
+def notify(msg):
+    if not DRY:
+        subprocess.run(["notify-send", "-a", "launch-pinned", msg], check=False)
+    else:
+        print("notify:", msg)
+
+def launchers():
+    cur, found = None, []
+    for line in open(RC, encoding="utf-8", errors="replace"):
+        line = line.rstrip("\n")
+        if line.startswith("["):
+            cur = line
+        elif line.startswith("launchers=") and cur and cur.endswith("[Configuration][General]"):
+            found.append(line.split("=", 1)[1])
+    # first task manager applet with launchers
+    return [x for x in found[0].split(",") if x] if found else []
+
+def data_dirs():
+    home = os.environ.get("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
+    dirs = os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(":")
+    return [home] + dirs + ["/var/lib/flatpak/exports/share",
+                            os.path.expanduser("~/.local/share/flatpak/exports/share")]
+
+def find_desktop(did):
+    for d in data_dirs():
+        for name in (did, did.replace("-", "/", 1)):
+            p = os.path.join(d, "applications", name)
+            if os.path.isfile(p):
+                return p
+    return None
+
+def resolve(entry):
+    kind, _, val = entry.partition(":")
+    if entry.startswith("preferred://"):
+        what = entry[len("preferred://"):]
+        if what == "filemanager":
+            out = subprocess.run(["xdg-mime", "query", "default", "inode/directory"], capture_output=True, text=True).stdout.strip()
+        elif what == "browser":
+            out = subprocess.run(["xdg-settings", "get", "default-web-browser"], capture_output=True, text=True).stdout.strip()
+        else:
+            out = ""
+        return out or None
+    if kind == "applications":
+        return val
+    if entry.startswith("file://"):
+        return entry[7:]
+    return None
+
+def clean_exec(s):
+    s = re.sub(r"%[fFuUdDnNickvm]", "", s).replace("%%", "%")
+    a = shlex.split(s)
+    if "@@" in a or "@@u" in a:  # flatpak file-forwarding block
+        a = [x for x in a if x not in ("@@", "@@u", "--file-forwarding")]
+    return a
+
+def build(path):
+    cp = configparser.RawConfigParser(strict=False, interpolation=None)
+    cp.optionxform = str
+    cp.read(path, encoding="utf-8")
+    de = cp["Desktop Entry"]
+    exec_ = de.get("Exec", "")
+    for sec in cp.sections():
+        if sec.startswith("Desktop Action "):
+            nm = sec[len("Desktop Action "):]
+            if (re.sub(r"[-_ ]", "", nm).lower() == "newwindow" and "new-window" in cp[sec].get("Exec", "")):
+                exec_ = cp[sec]["Exec"]
+                break
+    else:
+        argv = clean_exec(exec_)
+        base = os.path.basename(argv[0]) if argv else ""
+        if "flatpak" in base and "app.zen_browser.zen" in argv:
+            argv.append("--new-window")
+        elif base in NEWWIN and "--new-window" not in argv:
+            argv.insert(1, "--new-window")
+        else:
+            pass
+        exec_ = None
+    argv = clean_exec(exec_) if exec_ else argv
+    if de.get("Terminal", "false").lower() == "true":
+        argv = ["kitty", "--"] + argv
+    return argv
+
+def main():
+    try:
+        n = int(sys.argv[1])
+    except (IndexError, ValueError):
+        sys.exit("usage: launch-pinned N (1-10)")
+    ls = launchers()
+    if not 1 <= n <= len(ls):
+        notify(f"No pinned app #{n}")
+        return
+    did = resolve(ls[n - 1])
+    path = find_desktop(did) if did else None
+    if not path:
+        notify(f"Cannot resolve pinned app #{n}: {ls[n-1]}")
+        return
+    argv = build(path)
+    if DRY:
+        print(f"{n}: {did} -> {' '.join(shlex.quote(a) for a in argv)}")
+        return
+    subprocess.Popen(argv, start_new_session=True, stdin=subprocess.DEVNULL,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+main()

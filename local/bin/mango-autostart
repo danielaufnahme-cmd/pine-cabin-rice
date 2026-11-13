@@ -1,0 +1,11 @@
+#!/bin/sh
+# mango-autostart CMD [ARGS...]: run an autostart command from mango's
+# config, except when Mango runs nested inside KDE (MANGO_NESTED=1, set by
+# mango-nested); then skip it so it can't clash with KDE's own
+# portal / polkit agent / network applet.
+if [ "${MANGO_NESTED:-}" = 1 ]; then
+    printf '%s [%s] nested, skipped autostart: %s\n' "$(date '+%F %T')" "$$" "$*" \
+        >> "${XDG_RUNTIME_DIR:-/tmp}/mango-nested.log"
+    exit 0
+fi
+exec "$@"

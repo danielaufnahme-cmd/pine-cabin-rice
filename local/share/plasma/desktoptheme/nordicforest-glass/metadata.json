@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "KDE Visual Design Group (Breeze); glass tweak for daniel"
+            }
+        ],
+        "Category": "",
+        "Description": "Breeze copy with frosted translucent panel, popups and tooltips (NordicForest rice)",
+        "EnabledByDefault": true,
+        "Id": "nordicforest-glass",
+        "License": "LGPL",
+        "Name": "NordicForest Glass",
+        "Version": "6.26.0",
+        "Website": "https://www.kde.org/"
+    },
+    "X-Plasma-API": "5.0"
+}

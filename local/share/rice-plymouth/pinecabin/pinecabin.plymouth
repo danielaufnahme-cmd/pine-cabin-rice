@@ -1,0 +1,69 @@
+[Plymouth Theme]
+Name=PineCabin
+Description=Dark pine background, cedar emblem, small cedar spinner
+ModuleName=two-step
+
+[two-step]
+Font=Cantarell 12
+TitleFont=Cantarell Light 24
+ImageDir=/usr/share/plymouth/themes/pinecabin
+WatermarkHorizontalAlignment=.5
+WatermarkVerticalAlignment=.42
+HorizontalAlignment=.5
+VerticalAlignment=.68
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.72
+TitleHorizontalAlignment=.5
+TitleVerticalAlignment=.2
+MessageBelowAnimation=true
+Transition=none
+TransitionDuration=0.0
+BackgroundStartColor=0x141815
+BackgroundEndColor=0x141815
+ProgressBarBackgroundColor=0x3d4a3c
+ProgressBarForegroundColor=0xc88a52
+ProgressBarWidth=240
+ProgressBarHeight=3
+ProgressBarHorizontalAlignment=.5
+ProgressBarVerticalAlignment=.68
+DialogClearsFirmwareBackground=true
+
+[boot-up]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[shutdown]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[reboot]
+UseEndAnimation=false
+UseFirmwareBackground=false
+
+[updates]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Installing Updates...
+SubTitle=Do not turn off your computer
+
+[system-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Upgrading System...
+SubTitle=Do not turn off your computer
+
+[firmware-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Upgrading Firmware...
+SubTitle=Do not turn off your computer
+
+[system-reset]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Resetting System...
+SubTitle=Do not turn off your computer

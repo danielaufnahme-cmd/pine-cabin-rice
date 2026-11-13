@@ -1,0 +1,198 @@
+/* ~/.config/rofi/config.rasi -- the SUPER+SPACE launcher.
+ *
+ * Colours come from noctalia.rasi. On Arch, Noctalia rewrote it from the
+ * wallpaper palette; Noctalia is not on this Fedora PC, so it is now a fixed
+ * palette (teal accent matching the Mango borders and waybar). Only its colour
+ * variables are used here:  @bg  @bg-alt  @fg  @accent  @accent-fg  @border
+ *
+ * Closing: Escape, launching an app, pressing SUPER+SPACE again (the bind in
+ * ~/.config/mango/config.conf toggles), or clicking anywhere outside the box.
+ *
+ * Click-outside needs a trick on Wayland. rofi is a layer surface only as big
+ * as its box, so a click beside it lands on some other window and rofi never
+ * hears of it -- click-to-exit only ever worked on X11. So the window covers
+ * the whole screen (lightly dimmed, not blurred -- see layer_rule in ~/.config/mango/config.conf)
+ * and the space around the box is filled with invisible widgets named
+ * button-*. rofi makes any widget whose name starts with "button" clickable
+ * and runs its `action`; kb-cancel is Escape.
+ *
+ * The box is pinned from the top, not centred: centred, it re-centred on
+ * every keystroke as the list shrank, and the search field jumped about.
+ *
+ * The previous layout (720px, dashed separator, from Zeibytes/10Hour) is in
+ * config.rasi.bak-20260926-142701.
+ */
+
+@import "pine-cabin.rasi"
+/* Corner radii (was rewritten by corners-toggle on Arch; fixed here). */
+@import "corners.rasi"
+
+configuration {
+    modes: "drun";
+    sorting-method: "normal";
+    show-icons: true;
+    matching: "regex";
+    drun-match-fields: "name";
+    display-drun: "";
+    // The app's name, then what kind of app it is, quieter. [...] drops the
+    // second half for apps that do not say.
+    drun-display-format: "{name}[<span alpha='55%' size='small'>   {generic}</span>]";
+    click-to-exit: true;
+}
+
+* {
+    font: "Adwaita Sans 12";
+    background-color: transparent;
+    text-color: @fg;
+
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+/* ===== The screen: a dimmed backdrop you can click to close ===== */
+
+window {
+    fullscreen: true;
+    background-color: #0000004d;
+    border: 0px;
+    border-radius: @corner-window;
+    padding: 0px;
+}
+
+mainbox {
+    orientation: vertical;
+    children: [ "button-above", "row", "button-below" ];
+}
+
+row {
+    orientation: horizontal;
+    expand: false;
+    children: [ "button-left", "launcher", "button-right" ];
+}
+
+/* A quarter of the way down: where the eye already is. */
+button-above {
+    expand: false;
+    padding: 24% 0px 0px 0px;
+    action: "kb-cancel";
+}
+
+button-below,
+button-left,
+button-right {
+    expand: true;
+    action: "kb-cancel";
+}
+
+/* ===== The box ===== */
+
+launcher {
+    orientation: vertical;
+    expand: false;
+    width: 640px;
+
+    background-color: @bg;
+    border: 1px;
+    border-color: @bg-alt;
+    border-radius: @corner-launcher;
+    padding: 12px;
+    spacing: 10px;
+
+    children: [ inputbar, message, listview ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius: @corner-inputbar;
+    padding: 13px 16px;
+    spacing: 12px;
+
+    children: [ entry, num-filtered-rows, textbox-num-sep, num-rows ];
+}
+
+entry {
+    font: "Adwaita Sans 14";
+    placeholder: "Search apps";
+    placeholder-color: @border;
+    cursor-color: @accent;
+    vertical-align: 0.5;
+}
+
+/* The "3 / 94" counter, kept from the old layout but made quiet. */
+num-filtered-rows,
+num-rows,
+textbox-num-sep {
+    font: "JetBrainsMono Nerd Font 9";
+    expand: false;
+    text-color: @border;
+    vertical-align: 0.5;
+}
+
+textbox-num-sep {
+    str: " / ";
+}
+
+listview {
+    // rofi's built-in theme gives the list a dashed separator in its own
+    // blue; the reset in * does not cover borders, so it leaked through.
+    border: 0px;
+    columns: 1;
+    lines: 7;
+    fixed-height: false;
+    spacing: 3px;
+    scrollbar: false;
+}
+
+/* ===== Rows ===== */
+
+element {
+    padding: 9px 12px;
+    spacing: 14px;
+    border-radius: @corner-element;
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element normal.normal,
+element alternate.normal,
+element normal.active,
+element alternate.active {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element normal.urgent,
+element alternate.urgent,
+element selected.urgent {
+    background-color: @bg-alt;
+    text-color: @accent;
+}
+
+element selected.normal,
+element selected.active {
+    background-color: @accent;
+    text-color: @accent-fg;
+}
+
+element-icon {
+    size: 30px;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+/* ===== Messages (errors, the calculator, ...) ===== */
+
+message {
+    background-color: @bg-alt;
+    border-radius: @corner-message;
+}
+
+textbox {
+    padding: 10px 16px;
+    text-color: @fg;
+}
